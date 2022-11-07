@@ -1,13 +1,18 @@
 package com.softserve.itacademy.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.softserve.itacademy.service.impl.UserSerializer;
+
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import java.util.List;
 
+@JsonSerialize(using = UserSerializer.class)
+
 //@Entity - показує, що програма не просто кусок коду, а сущность(об'єкт), який треба засейвить в БД
 @Entity
 @Table(name = "users")
-public class User  {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -16,7 +21,7 @@ public class User  {
     @Column(name = "first_name", nullable = false)
     private String firstName;
 
-   @Pattern(regexp = "[A-Z][a-z]+",
+    @Pattern(regexp = "[A-Z][a-z]+",
             message = "Must start with a capital letter followed by one or more lowercase letters")
     @Column(name = "last_name", nullable = false)
     private String lastName;
@@ -39,8 +44,8 @@ public class User  {
 
     @ManyToMany
     @JoinTable(name = "todo_collaborator",
-        joinColumns = @JoinColumn(name = "collaborator_id"),
-        inverseJoinColumns = @JoinColumn(name = "todo_id"))
+            joinColumns = @JoinColumn(name = "collaborator_id"),
+            inverseJoinColumns = @JoinColumn(name = "todo_id"))
     private List<ToDo> otherTodos;
 
     public User() {
