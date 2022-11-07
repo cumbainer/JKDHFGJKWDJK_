@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Tasks of ToDo List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+</head>
+<div th:insert="header"></div>
+<body>
+    <div class="container">
+        <div class="row">
+            <h1 th:text="'All Tasks From ' + ${todoTitle}"></h1>
+        </div>
+
+        <div class="d-flex flex-row-reverse">
+            <a class="btn btn-primary btn-lg mb-3" role="button" th:href="@{|/tasks/create/todos/${id}|}">Create new Task</a>
+        </div>
+
+        <div class="row">
+            <h2>Tasks:</h2>
+        </div>
+
+        <table class="table">
+            <thead class="table-dark">
+            <tr>
+                <th scope="col">No.</th>
+                <th scope="col">Id</th>
+                <th scope="col">Name</th>
+                <th scope="col">Priority</th>
+                <th scope="col">State</th>
+                <th colspan="2">Operations</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="t, counter : ${tasks}" class="font-weight-bold">
+                <td><p class="font-weight-bold" th:text="${counter.count}"></p></td>
+                <td><p th:text="${t.id}"></p></td>
+                <td><p th:text="${t.name}"></p></td>
+                <td><p th:text="${t.priority}"></p></td>
+                <td><p th:text="${t.state.getName()}"></p></td>
+                <td>
+                    <a class="btn btn-primary" role="button"  th:href="@{|/tasks/${t.id}/update/todos/${id}|}">Edit</a>
+                </td>
+                <td>
+                    <a class="btn btn-danger" role="button" th:href="@{|/tasks/${t.id}/delete/todos/${id}|}">Remove</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="row">
+            <label>
+                <select th:value="*{user.id}" class="form-select">
+                    <option value="" selected hidden>Select Collaborator</option>
+                    <option th:each="c : ${users}"
+                            th:text="${c.firstName} + ' ' + ${c.lastName}"
+                            th:value="${c.id}">
+                    </option>
+                </select>
+                <form method="POST" th:action="@{'/todos/' + ${todo.id} + '/add'}" >
+                    <div class="d-flex flex-row mt-2">
+                        <a class="btn btn-primary" type="submit" role="button" th:href="@{|/todos/${todo.id}/${id}/add|}" >Add Collaborator</a>
+                    </div>
+                </form>
+            </label>
+        </div>
+        <div class="row">
+            <table class="table">
+                <tr th:each="c, counter : ${collaborators}">
+                    <td>
+                        <p th:text="${counter.count}"></p>
+                    </td>
+                    <td>
+                        <a th:href="@{|/users/read/${c.id}|}" th:text="${c.firstName} + ' ' + ${c.lastName}"></a>
+                    </td>
+                    <td>
+                        <a class="btn btn-danger" role="button" th:href="@{|/todos/${todo.id}/${c.id}/remove|}">Remove</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="d-flex flex-row mt-2">
+            <a class="btn btn-primary" role="button" th:href="@{|/todos/all/users/${user.id}|}" >Go to ToDo Lists</a>
+        </div>
+
+    </div>
+</body>
+</html>
