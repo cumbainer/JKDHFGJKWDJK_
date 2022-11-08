@@ -1,7 +1,7 @@
 package com.softserve.itacademy.model;
 
 import javax.persistence.*;
-import javax.validation.*;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Entity

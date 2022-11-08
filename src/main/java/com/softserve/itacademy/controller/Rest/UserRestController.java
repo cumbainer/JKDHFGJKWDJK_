@@ -1,20 +1,14 @@
 package com.softserve.itacademy.controller.Rest;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.softserve.itacademy.model.Task;
-import com.softserve.itacademy.model.ToDo;
 import com.softserve.itacademy.model.User;
 import com.softserve.itacademy.service.RoleService;
-import com.softserve.itacademy.service.ToDoService;
 import com.softserve.itacademy.service.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
 
 import java.util.List;
 
@@ -22,18 +16,22 @@ import java.util.List;
 @RequestMapping("/api/users")
 public class UserRestController {
 
-    private UserService userService;
-    private RoleService roleService;
-    private ToDoService toDoService;
+    private final UserService userService;
+    private final RoleService roleService;
+    private final ModelMapper modelMapper;
+
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserRestController(UserService userService, RoleService roleService,ToDoService toDoService) {
+    UserRestController(UserService userService, RoleService roleService,PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.roleService = roleService;
-        this.toDoService = toDoService;
+        this.passwordEncoder = passwordEncoder;
+        this.modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setSkipNullEnabled(true);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     public ResponseEntity<User> readOne(@PathVariable("id") Long userId) {
         if (userId == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

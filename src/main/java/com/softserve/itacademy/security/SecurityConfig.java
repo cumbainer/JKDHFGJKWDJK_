@@ -51,6 +51,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
+//    @Override
+//    protected void configure(HttpSecurity http) throws Exception {
+//        http
+//                .httpBasic().disable()
+//                .csrf().disable()
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and()
+//                .authorizeRequests()
+//                .antMatchers("/api/auth/login").permitAll()
+//                .antMatchers("/api/users").permitAll()
+//                .anyRequest().authenticated()
+//                .and()
+//                .apply(new JWT_Configure(jwtProvider));
+//    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
