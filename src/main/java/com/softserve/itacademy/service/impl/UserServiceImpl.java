@@ -1,15 +1,18 @@
 package com.softserve.itacademy.service.impl;
 
+//import com.softserve.itacademy.exception.NullEntityReferenceException;
+import com.softserve.itacademy.Exception.NullEntityReferenceException;
 import com.softserve.itacademy.model.User;
 import com.softserve.itacademy.repository.UserRepository;
 import com.softserve.itacademy.service.UserService;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Service
+@Service("userServiceImpl")
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
@@ -19,26 +22,31 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User create(User user) {
-            return userRepository.save(user);
+    public User create(User role) {
+        if (role != null) {
+            return userRepository.save(role);
+        }
+        throw new NullEntityReferenceException("User cannot be 'null'");
     }
 
     @Override
     public User readById(long id) {
-        Optional<User> optional = userRepository.findById(id);
-            return optional.get();
+        return userRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("User with id " + id + " not found"));
     }
 
     @Override
-    public User update(User user) {
-            User oldUser = readById(user.getId());
-                return userRepository.save(user);
+    public User update(User role) {
+        if (role != null) {
+            readById(role.getId());
+            return userRepository.save(role);
+        }
+        throw new NullEntityReferenceException("User cannot be 'null'");
     }
 
     @Override
     public void delete(long id) {
-        User user = readById(id);
-            userRepository.delete(user);
+        userRepository.delete(readById(id));
     }
 
     @Override
@@ -47,4 +55,7 @@ public class UserServiceImpl implements UserService {
         return users.isEmpty() ? new ArrayList<>() : users;
     }
 
+    public Optional<User> findByEmail(String email){
+        return userRepository.findByEmail(email);
+    }
 }

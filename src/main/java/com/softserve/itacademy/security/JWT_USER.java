@@ -1,34 +1,36 @@
 package com.softserve.itacademy.security;
 
-import com.softserve.itacademy.model.User;
+import com.softserve.itacademy.model.Role;
 import org.springframework.security.core.GrantedAuthority;
-
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+public class JWT_USER implements UserDetails {
 
-public class UserDetailsImpl implements org.springframework.security.core.userdetails.UserDetails {
-    private final User user;
-
-    public String getFirstName() {
-        return firstName;
-    }
-
+    private Long id;
     private String firstName;
+    private String lastName;
+    private String email;
+    private String password;
 
     private List<GrantedAuthority> authorities;
 
 
-    public UserDetailsImpl(User user) {
-        this.user = user;
-        this.firstName = user.getFirstName();
+    public JWT_USER(Long id, String firstName, String lastName, String email, Role role, String password){
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
 
         this.authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRole().getName()));
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
     }
+
 
 
     @Override
@@ -38,12 +40,12 @@ public class UserDetailsImpl implements org.springframework.security.core.userde
 
     @Override
     public String getPassword() {
-        return this.user.getPassword();
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return this.user.getUsername();
+        return email;
     }
 
     @Override
@@ -64,10 +66,5 @@ public class UserDetailsImpl implements org.springframework.security.core.userde
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    public User getUser()
-    {
-        return this.user;
     }
 }
