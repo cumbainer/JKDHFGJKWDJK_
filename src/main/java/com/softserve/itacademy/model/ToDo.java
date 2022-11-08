@@ -1,5 +1,8 @@
 package com.softserve.itacademy.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.softserve.itacademy.service.impl.ToDoSerializer;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -7,6 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
+@JsonSerialize(using = ToDoSerializer.class)
 @Entity
 @Table(name = "todos")
 public class ToDo {
@@ -18,7 +22,7 @@ public class ToDo {
     @Column(name = "title", nullable = false, unique = true)
     private String title;
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at")//, nullable = false)
     private LocalDateTime createdAt;
 
     @ManyToOne

@@ -1,9 +1,14 @@
 package com.softserve.itacademy.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.softserve.itacademy.service.impl.TaskSerializer;
+import com.softserve.itacademy.service.impl.ToDoSerializer;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+@JsonSerialize(using = TaskSerializer.class)
 @Entity
 @Table(name = "tasks")
 public class Task {
