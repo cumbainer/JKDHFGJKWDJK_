@@ -1,12 +1,18 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org/" lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-</head>
-<nav class="navbar navbar-light bg-secondary" th:fragment="header">
-    <div class="container -p2">
-        <a class="navbar-brand" th:href="@{/home}">TODOs list</a>
-    </div>
-</nav>
+<div xmlns:th="http://www.thymeleaf.org"  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <!--                    todo: configure links-->
+                <a class="navbar-brand" th:href="@{/}">TODOs Home</a>
+                <a class="navbar-brand" sec:authorize="isAuthenticated()" th:href="@{/todos/all/users/{user_id}(user_id=${#authentication.getPrincipal().getUser().getId()})}">My TODOs</a>
+                <a class="navbar-brand" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/users/all}">List of users</a>
+            </div>
+
+
+            <form  class="navbar-brand" sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" style="display: inline-block; float: right;" th:with="auth=${#authentication.getPrincipal()}">
+                <label >Hello <a th:text="${auth.firstName}" th:href="@{/users/{id}/read(id=${#authentication.principal.user.id})}"/> !</label>
+                <input  class="btn-info btn-sm" type="submit" value="Log out">
+            </form>
+        </div>
+    </nav>
+</div>
