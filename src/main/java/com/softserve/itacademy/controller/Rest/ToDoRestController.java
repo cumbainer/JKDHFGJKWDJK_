@@ -1,21 +1,17 @@
 package com.softserve.itacademy.controller.Rest;
 
-import java.time.LocalDateTime;
-import java.util.*;
-
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.softserve.itacademy.model.Task;
 import com.softserve.itacademy.model.ToDo;
 import com.softserve.itacademy.model.User;
 import com.softserve.itacademy.service.ToDoService;
 import com.softserve.itacademy.service.UserService;
-import com.softserve.itacademy.service.impl.ToDoSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 
 @RestController
@@ -76,7 +72,7 @@ public class ToDoRestController {
     }
 
     @PutMapping("")
-    public ResponseEntity<ToDo> updateToDo(@RequestBody @Valid ToDo todo){
+    public ResponseEntity<ToDo> updateToDo(@RequestBody ToDo todo){
         if (todo == null) {return new ResponseEntity<>(HttpStatus.NOT_FOUND);}
 
         toDoService.update(todo);
