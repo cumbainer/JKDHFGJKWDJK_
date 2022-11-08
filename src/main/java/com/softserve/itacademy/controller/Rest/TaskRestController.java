@@ -1,8 +1,10 @@
 package com.softserve.itacademy.controller.Rest;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.softserve.itacademy.model.Task;
 import com.softserve.itacademy.model.ToDo;
 import com.softserve.itacademy.service.*;
+import com.softserve.itacademy.service.impl.TaskSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+
+@JsonSerialize(using = TaskSerializer.class)
 @RestController
 @RequestMapping("/api/tasks/")
 public class TaskRestController {

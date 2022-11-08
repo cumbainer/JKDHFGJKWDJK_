@@ -54,7 +54,9 @@ public class UserRestController {
 
     @PutMapping("")
     public ResponseEntity<User> updateUser(@RequestBody @Valid User user) {
+        if (user.getPassword().isBlank()) user.setPassword(userService.readById(user.getId()).getPassword());
         userService.update(user);
+
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
