@@ -9,7 +9,6 @@ import java.util.List;
 
 @JsonSerialize(using = UserSerializer.class)
 
-//@Entity - показує, що програма не просто кусок коду, а сущность(об'єкт), який треба засейвить в БД
 @Entity
 @Table(name = "users")
 public class User {
